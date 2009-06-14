@@ -37,7 +37,7 @@ syn cluster cParenGroup add=objcMethodName,objcMethodArg
 " but NOT "bar" in "[NSObject foo: bar]".
 syn match objcMessageName '\(\[\s*\k\+\s\+\|\]\s*\)\@<=\k*\s*\]'me=e-1 display contained containedin=objcMessage
 " Matches "foo:" in "[NSObject foo: bar]" or "[[NSObject new] foo: bar]"
-syn match objcMessageColon '\(\S\+\s\+\)\@<=\k\+\s*:' display contained containedin=objcMessage
+syn match objcMessageColon '\(\_\S\+\_\s\+\)\@<=\k\+\s*:' display contained containedin=objcMessage
 
 " You may want to customize this one. I couldn't find a default group to suit
 " it, but you can modify your colorscheme to make this a different color.
