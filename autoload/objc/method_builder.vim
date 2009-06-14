@@ -5,6 +5,7 @@
 "               it looks for the corresponding header file of the current *.m
 "               file (e.g. "foo.m" -> "foo.h").
 " Last Updated: June 03, 2009
+"       - make sure you're not in a comment
 
 " TODO: Relative pathnames
 fun objc#method_builder#Completion(ArgLead, CmdLine, CursorPos)
@@ -100,7 +101,14 @@ fun objc#method_builder#Build(header)
 			let lnum += 1
 			if is_method | let last_change = lnum | endif
 		else " Skip method declaration if it is already declared.
-			let i += declarations[i][0] == '@' ? 1 : 4
+			if declarations[i][0] == '@'
+				let i += 1
+			else
+				while declarations[i] != '}' && i < len
+					let i += 1
+				endw
+				let i += 1
+			endif
 		endif
 		let i += 1
 	endw
