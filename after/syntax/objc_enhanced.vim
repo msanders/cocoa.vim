@@ -15,7 +15,6 @@ syn keyword objcConstant YES NO TRUE FALSE
 
 syn region objcImp start='@implementation' end='@end' transparent
 syn region objcHeader start='@interface' end='@end' transparent
-syn region objcAssign start='=' end=';\|)'me=e-1 transparent
 
 " I make this typo sometimes so it's nice to have it highlighted.
 syn match objcError '\v(NSLogv=\(\s*)@<=[^@]=["'].*'me=e-1
@@ -31,13 +30,16 @@ syn match objcMethodArg ')\@<=\s*\k\+' display contained containedin=objcMethod
 syn match objcMethodName '\(^\s*[-+]\s*(\_[^)]*)\)\@<=\_\s*\_\k\+' contained containedin=objcMethod
 syn match objcMethodColon '\k\+\s*:' display contained containedin=objcMethod
 " Don't match these groups in cParen "(...)"
-syn cluster cParenGroup add=objcMethodName,objcMethodArg
+syn cluster cParenGroup add=objcMethodName,objcMethodArg,objcMethodColon
 
 " Matches "bar" in "[NSObject bar]" or "bar" in "[[NSObject foo: baz] bar]",
 " but NOT "bar" in "[NSObject foo: bar]".
 syn match objcMessageName '\(\[\s*\k\+\s\+\|\]\s*\)\@<=\k*\s*\]'me=e-1 display contained containedin=objcMessage
 " Matches "foo:" in "[NSObject foo: bar]" or "[[NSObject new] foo: bar]"
 syn match objcMessageColon '\(\_\S\+\_\s\+\)\@<=\k\+\s*:' display contained containedin=objcMessage
+
+" Don't match these in this strange group for edge cases...
+syn cluster cMultiGroup add=objcMessageColon,objcMessageName,objcMethodName,objcMethodArg,objcMethodColon
 
 " You may want to customize this one. I couldn't find a default group to suit
 " it, but you can modify your colorscheme to make this a different color.
