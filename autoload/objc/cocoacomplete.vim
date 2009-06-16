@@ -51,13 +51,13 @@ endf
 
 fun s:GetCompleteType(lnum, col)
 	let scopelist = map(synstack(a:lnum, a:col), 'synIDattr(v:val, "name")')
-	if empty(scopelist) | return '' | endif
+	if empty(scopelist) | return 'types' | endif
 
 	let current_scope = scopelist[-1]
 	let beforeCursor = strpart(getline(a:lnum), 0, a:col)
 
 	" Completing a function name:
-	if match(getline(a:lnum), '\%'.(a:col + 1).'c\s*(') != -1
+	if getline(a:lnum) =~ '\%'.(a:col + 1).'c\s*('
 		return 'functions'
 	" Inside brackets "[ ... ]":
 	elseif index(scopelist, 'objcMessage') != -1
@@ -72,10 +72,12 @@ fun s:GetCompleteType(lnum, col)
 			return 'classes.types.constants.function_params'
 		endif
 	" Inside braces "{ ... }" or after equals "=":
-	elseif current_scope == 'cBlock' || current_scope == 'objcAssign'
+	elseif current_scope == 'cBlock' || current_scope == 'objcAssign' || current_scope == ''
 		let type = current_scope == 'cBlock' ? 'types.constants.' : ''
 		let type = 'classes.'.type.'function_params'
-		return beforeCursor =~ '\(^\|[{};=)]\)\s*\k*$' ? type : 'methods'
+
+		if beforeCursor =~ 'IBOutlet' | return 'classes' | endif
+		return beforeCursor =~ '\v(^|[{};=\])]|return)\s*\k*$'? type : 'methods'
 	" Directly inside "@implementation ... @end" or "@interface ... @end"
 	elseif current_scope == 'objcImp' || current_scope  == 'objcHeader'
 		" TODO: Complete delegate/subclass methods
