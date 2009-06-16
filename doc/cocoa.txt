@@ -1,7 +1,7 @@
 *cocoa.txt*  Plugin for Cocoa/Objective-C development.
 
 cocoa.vim                                                              *cocoa*
-Last Change: June 12, 2009
+Last Change: June 16, 2009
 Author: Michael Sanders
 
 |cocoa-introduction| Introduction
@@ -95,6 +95,20 @@ COMMANDS                                                      *cocoa-commands*
 			from a list declared in a header file (.h). If no
 			argument is given, the corresponding header file is
 			used (e.g. "foo.m" -> "foo.h").
+
+==============================================================================
+CODE COMPLETION                                             *cocoa-completion*
+
+When cocoa.vim is installed the 'omnifunc' is automatically set to
+'cocoacomplete#Complete'. This allows you to complete classes, functions,
+methods, etc. with <c-x><c-o>. These keywords are saved from header files in
+~/.vim/lib/cocoa_indexes; they have been built for you, although you can build
+them again by running ~/.vim/lib/extras/cocoa_definitions.py.
+
+Completions with parameters (i.e., functions and methods) are automatically
+converted to |snipMate| if it is installed. To invoke the snippet, simply
+press a whitespace character (space, tab, or return), and then navigate the
+snippet as you would in snipMate.
 
 ==============================================================================
 CONTACT                                         *cocoa-contact* *cocoa-author*
