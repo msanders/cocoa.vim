@@ -64,7 +64,7 @@ endf
 fun s:ConvertFunction(function)
 	let name = matchstr(a:function, '^\k\+')
 	let params = matchstr(a:function, '^\k\+(\zs.*')
-	let snippet = name.'('.substitute(params, '\v(.{-})(, |\))', '${0:\1}\2', 'g').'${0}'
+	let snippet = name.'('.substitute(params, '\v(.{-1})(, |\))', '${0:\1}\2', 'g').'${0}'
 	return s:OrderSnippet(snippet)
 endf
 
