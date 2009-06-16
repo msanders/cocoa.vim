@@ -44,11 +44,14 @@ def get_functions(header_files):
     '''Returns list of Cocoa Functions.'''
     lines = match_output(r"grep -h '^[A-Z][A-Z_]* [^;]* \**NS\w\+ *(' "
                          + header_files, r'NS\w+\s*\(.*?\)', 0)
-    for i in range(len(lines)):
-        lines[i] = lines[i].replace('NSInteger', 'int')
-        lines[i] = lines[i].replace('NSUInteger', 'unsigned int')
-        lines[i] = lines[i].replace('CGFloat', 'float')
+    lines = [format_function_line(line) for line in lines]
     return lines
+
+def format_function_line(line):
+    line = line.replace('NSInteger', 'int')
+    line = line.replace('NSUInteger', 'unsigned int')
+    line = line.replace('CGFloat', 'float')
+    return line.replace('void', '')
 
 def get_types(header_files):
     '''Returns a list of Cocoa Types.'''
