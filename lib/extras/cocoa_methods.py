@@ -3,7 +3,7 @@
 Lists Cocoa methods in given file or ./cocoa_indexes/methods.txt by default.
 '''
 import re, os, gzip
-from cocoa_definitions import default_headers
+from cocoa_definitions import default_headers, format_function_line
 
 def get_methods(headers):
     '''Returns list of Cocoa methods.'''
@@ -42,7 +42,7 @@ def format_line(line):
     line = re.sub(r'\s*:\s*', ':', line)
     line = re.sub(r'/\*.*?\*/\s*|[()]', '', line)
     line = re.sub(r'(NS\S+)Pointer', r'\1 *', line)
-    return line
+    return format_function_line(line)
 
 def extract_file_to(fname=None):
     '''
