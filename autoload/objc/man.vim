@@ -1,7 +1,9 @@
 " File:         objc#man.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description:  Allows you to look up Cocoa API docs in Vim.
-" Last Updated: June 12, 2009
+" Last Updated: May 28, 2009
+" NOTE:         See http://mymacinations.com/2008/02/06/changing-the-systems-default-settings-for-html-files-safe/
+"               for removing the annoying security alert in Leopard.
 
 " Return all matches in for ":CocoaDoc <tab>" sorted by length.
 fun objc#man#Completion(ArgLead, CmdLine, CursorPos)
@@ -30,7 +32,7 @@ fun s:OpenFile(file)
 endf
 
 fun objc#man#ShowDoc(...)
-	let word = a:0 ? a:1 : expand('<cword>')
+	let word = a:0 ? a:1 : matchstr(expand('<cWORD>'), '\w\+:\=')
 	if word == ''
 		if !a:0 " Mimic K if using it as such
 			echoh ErrorMsg
