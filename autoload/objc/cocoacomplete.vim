@@ -1,6 +1,6 @@
 " File:         cocoacomplete.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
-" Last Updated: June 16, 2009
+" Last Updated: June 23, 2009
 " Description:  An omni-completion plugin for Cocoa/Objective-C.
 
 let s:lib_dir = fnameescape($HOME.'/.vim/lib/')
@@ -147,7 +147,7 @@ fun s:GetDeclWord(var)
 	let startpos = [line('.'), col('.')]
 	let line_found = searchdecl(a:var) != 0 ? 0 : line('.')
 	call cursor(startpos)
-	let matchstr =  '\v(IBAction)=\zs\k*\s*\ze\**\s*'
+	let matchstr = '\v(IBOutlet\s+)=\zs\k+\s*\ze\**\s*'
 
 	" If the declaration was not found in the implementation file, check
 	" the header.
@@ -155,7 +155,7 @@ fun s:GetDeclWord(var)
 		let header_path = expand('%:p:r').'.h'
 		if filereadable(header_path)
 			for line in readfile(header_path)
-				if line =~ '^\s*\(IBOutlet\)\=\s*\k*\s*\ze\**\s*'.a:var.'\s*;'
+				if line =~ '^\s*\(IBOutlet\)\=\s*\k*\s*\ze\**\s*'.a:var.'\s*'
 					return matchstr(line, matchstr)
 				endif
 			endfor
