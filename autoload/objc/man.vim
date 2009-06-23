@@ -1,7 +1,7 @@
 " File:         objc#man.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description:  Allows you to look up Cocoa API docs in Vim.
-" Last Updated: May 28, 2009
+" Last Updated: June 23, 2009
 " NOTE:         See http://mymacinations.com/2008/02/06/changing-the-systems-default-settings-for-html-files-safe/
 "               for removing the annoying security alert in Leopard.
 
@@ -22,7 +22,7 @@ endfor
 let s:docset_cmd = '/Developer/usr/bin/docsetutil search -skip-text -query '
 
 fun s:OpenFile(file)
-	if a:file =~ '/usr/.\{-}/man/'
+	if a:file =~ '/.*/man/'
 		exe ':!'.substitute(&kp, '^man -s', 'man', '').' '.a:file
 	else
 		" /usr/bin/open strips the #fragments in file:// URLs, which we need,
@@ -31,8 +31,18 @@ fun s:OpenFile(file)
 	endif
 endf
 
+fun s:MatchAll(haystack, needle)
+    let matches = matchstr(a:haystack, a:needle)
+    let index = matchend(a:haystack, a:needle)
+    while index != -1
+		let matches .= matchstr(a:haystack, a:needle, index + 1)
+        let index = matchend(a:haystack, a:needle, index + 1)
+    endw
+    return matches
+endf
+
 fun objc#man#ShowDoc(...)
-	let word = a:0 ? a:1 : matchstr(expand('<cWORD>'), '\w\+:\=')
+	let word = a:0 ? a:1 : matchstr(getline('.'), '\<\w*\%'.col('.').'c\w\+:\=')
 	if word == ''
 		if !a:0 " Mimic K if using it as such
 			echoh ErrorMsg
@@ -40,6 +50,24 @@ fun objc#man#ShowDoc(...)
 			echoh None
 		endif
 		return
+	elseif word[len(word) - 1] == ':'
+		" Look up the whole method if it takes multiple arguments.
+		let lnum = line('.')
+		let endline = line('$')
+		let word = ''
+		while getline(lnum) !~ '\v([\w+\s+\w+:|]\s*\w+:)'
+			let lnum -= 1
+			if lnum == 0 | finish | endif
+		endw
+
+		while 1
+			let line = getline(lnum)
+			let word .= s:MatchAll(line, '\w\+:')
+			if lnum == endline || line =~ ';\|\w\+:.\{-}]'
+				break
+			endif
+			let lnum += 1
+		endw
 	endif
 
 	let references = {}
