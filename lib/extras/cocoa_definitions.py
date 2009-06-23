@@ -51,7 +51,7 @@ def format_function_line(line):
     line = line.replace('NSInteger', 'int')
     line = line.replace('NSUInteger', 'unsigned int')
     line = line.replace('CGFloat', 'float')
-    return re.sub('void(\s*[^*])', '\1', line)
+    return re.sub(r'void(\s*[^*])', r'\1', line)
 
 def get_types(header_files):
     '''Returns a list of Cocoa Types.'''
