@@ -1,7 +1,7 @@
 " File:         objc#method_list.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description:  Opens a split window containing the methods of the current file.
-" Last Updated: June 12, 2009
+" Last Updated: June 23, 2009
 
 au WinLeave Method\ List call<SID>LeaveMethodList()
 au WinEnter Method\ List call objc#method_list#Activate(0)
@@ -35,6 +35,8 @@ fun s:CreateMethodList()
 
 	sil file Method\ List
 	setl bt=nofile bh=wipe noswf nobl nonu nowrap syn=objc
+	syn match objcPragmark '^[^-+@].*$'
+	hi objcPragmark gui=italic term=underline
 
 	nn <silent> <buffer> <cr> :cal<SID>SelectMethod()<cr>
 	nn <buffer> q <c-w>q
@@ -47,18 +49,23 @@ endf
 fun s:GetAllMatches(needle)
 	let startpos = [line('.'), col('.')]
 	call cursor(1, 1)
-	let line = search(a:needle, 'Wc')
+
 	let results = {}
-	if line && !s:InComment(line, 1)
-		let results[getline(line)] = line
+	let line = search(a:needle, 'Wc')
+	let key = matchstr(getline(line), a:needle)
+	if !s:InComment(line, 1) && key != ''
+		let results[key] = line
 	endif
+
 	while 1
 		let line = search(a:needle, 'W')
 		if !line | break | endif
-		if !s:InComment(line, 1)
-			let results[getline(line)] = line
+		let key = matchstr(getline(line), a:needle)
+		if !s:InComment(line, 1) && key != ''
+			let results[key] = line
 		endif
 	endw
+
 	call cursor(startpos)
 	return results
 endf
@@ -69,7 +76,8 @@ endf
 
 fun s:UpdateMethodList()
 	winc p " Go to source file window
-	let s:methods = s:GetAllMatches('^@implementation\|^\s*\(+\|-\)')
+	let s:methods = s:GetAllMatches('^\v(\@(implementation|interface) \w+|'.
+	                              \ '\s*(\+|-).*|#pragma\s+mark\s+\zs.+)')
 	winc p " Go to method window
 
 	if empty(s:methods)
