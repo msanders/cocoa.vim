@@ -1,7 +1,7 @@
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description:  Better syntax highlighting for Objective-C files (part of the
 "               cocoa.vim plugin).
-" Last Updated: June 5, 2009
+" Last Updated: June 23, 2009
 
 " NOTE:    This next file (cocoa_keywords.vim) is rather large and may slow
 "          things down. Loading it seems to take less than 0.5 microseconds
@@ -25,12 +25,14 @@ syn match objcSuperclass '\(@\(implementation\|interface\)\s*\k\+\s*:\s*\)\@<=\k
 " Matches "- (void) foo: (int) bar and: (float) foobar"
 syn match objcMethod '^\s*[-+]\s*\_.\{-}[\{;]'me=e-1 transparent contains=cParen,objcInstMethod,objcFactMethod
 " Matches "bar & foobar" in above
-syn match objcMethodArg ')\@<=\s*\k\+' display contained containedin=objcMethod
+syn match objcMethodArg ')\@<=\s*\k\+' contained containedin=objcMethod
 " Matches "foo:" & "and:" in above
 syn match objcMethodName '\(^\s*[-+]\s*(\_[^)]*)\)\@<=\_\s*\_\k\+' contained containedin=objcMethod
-syn match objcMethodColon '\k\+\s*:' display contained containedin=objcMethod
+syn match objcMethodColon '\k\+\s*:' contained containedin=objcMethod
 " Don't match these groups in cParen "(...)"
 syn cluster cParenGroup add=objcMethodName,objcMethodArg,objcMethodColon
+" This fixes a bug with completion inside parens (e.g. if ([NSString ]))
+syn cluster cParenGroup remove=objcMessage
 
 " Matches "bar" in "[NSObject bar]" or "bar" in "[[NSObject foo: baz] bar]",
 " but NOT "bar" in "[NSObject foo: bar]".
