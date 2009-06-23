@@ -59,6 +59,8 @@ fun s:GetCompleteType(lnum, col)
 	" Completing a function name:
 	if getline(a:lnum) =~ '\%'.(a:col + 1).'c\s*('
 		return 'functions'
+	elseif current_scope == 'objcSuperclass'
+		return 'classes'
 	" Inside brackets "[ ... ]":
 	elseif index(scopelist, 'objcMessage') != -1
 		return beforeCursor =~ '\[\k*$' ? 'classes' : 'methods'
