@@ -20,7 +20,7 @@ syn region objcHeader start='@interface' end='@end' transparent
 syn match objcError '\v(NSLogv=\(\s*)@<=[^@]=["'].*'me=e-1
 
 syn match objcSubclass '\(@implementation\|@interface\)\@<=\s*\k\+' display contained containedin=objcImp,objcHeader
-syn match objcSuperclass '\(@\(implementation\|interface\)\s*\k\+\s*:\s*\)\@<=\k\+' display contained containedin=objcImp,objcHeader
+syn match objcSuperclass '\(@\(implementation\|interface\)\s*\k\+\s*:\)\@<=\s*\k*' display contained containedin=objcImp,objcHeader
 
 " Matches "- (void) foo: (int) bar and: (float) foobar"
 syn match objcMethod '^\s*[-+]\s*\_.\{-}[\{;]'me=e-1 transparent contains=cParen,objcInstMethod,objcFactMethod
