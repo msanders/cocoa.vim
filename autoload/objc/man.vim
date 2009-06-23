@@ -50,7 +50,7 @@ fun objc#man#ShowDoc(...)
 			echoh None
 		endif
 		return
-	elseif word[len(word) - 1] == ':'
+	elseif !a:0 && word[len(word) - 1] == ':'
 		" Look up the whole method if it takes multiple arguments.
 		let lnum = line('.')
 		let endline = line('$')
