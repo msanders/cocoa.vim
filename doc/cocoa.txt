@@ -88,8 +88,8 @@ integrate with Xcode:
 COMMANDS                                                      *cocoa-commands*
 
                                                                 *:ListMethods*
-:ListMethods		Open a split window containing the methods of the
-			current file.
+:ListMethods		Open a split window containing the methods, functions,
+			and #pragma marks of the current file.
                                                                *:BuildMethods*
 :BuildMethods [headerfile]
 			Build a template of methods in an implementation (.m)
