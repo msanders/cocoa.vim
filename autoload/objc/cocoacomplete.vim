@@ -1,6 +1,6 @@
 " File:         cocoacomplete.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
-" Last Updated: June 23, 2009
+" Last Updated: June 30, 2009
 " Description:  An omni-completion plugin for Cocoa/Objective-C.
 
 let s:lib_dir = fnameescape($HOME.'/.vim/lib/')
@@ -106,8 +106,6 @@ fun s:CompleteMethod(lnum, col, method)
 	let class = s:GetCocoaClass(a:lnum, a:col)
 	if class == ''
 		let object = matchstr(getline(a:lnum), '\%'.a:col.'c\k\+')
-		" let [var_lnum, var_col] = s:GetDeclWord(object)
-		" let class = s:GetCocoaClass(var_lnum, var_col)
 		let class = s:GetDeclWord(object)
 		if class == '' | return [] | endif
 	endif
@@ -188,7 +186,7 @@ fun s:GetMethodName(lnum, col, base)
 		let method = matchstr(line, '\%'.col.'c.\{-}\ze]').base
 		return substitute(method, '\v\k+:\zs.{-}\ze(\s*\k+:|'.base.'$)', '[^:]*', 'g')
 	else
-		return matchstr(line, '\%'.col.'c\k\+\s*').a:base
+		return a:base
 	endif
 endf
 
