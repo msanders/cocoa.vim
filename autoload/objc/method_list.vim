@@ -1,7 +1,7 @@
 " File:         objc#method_list.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description:  Opens a split window containing the methods of the current file.
-" Last Updated: June 23, 2009
+" Last Updated: July 13, 2009
 
 au WinLeave Method\ List call<SID>LeaveMethodList()
 au WinEnter Method\ List call objc#method_list#Activate(0)
@@ -101,6 +101,7 @@ endf
 fun s:SelectMethod()
 	let number = s:methods[getline('.')]
 	winc q
+	winc p
 	call cursor(number, 1)
 endf
 
