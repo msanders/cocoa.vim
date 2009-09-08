@@ -13,7 +13,7 @@ endf
 
 let s:docsets =  []
 for path in ['/Developer/Documentation/DocSets/com.apple.ADC_Reference_Library.CoreReference.docset',
-           \ '/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone2_0.iPhoneLibrary.docset']
+           \ '/Developer/Platforms/iPhoneOS.platform/Developer/Documentation/DocSets/com.apple.adc.documentation.AppleiPhone3_0.iPhoneLibrary.docset']
 	if isdirectory(path)
 		call add(s:docsets, path)
 	endif
