@@ -50,7 +50,7 @@ def generate_syntax_file():
     output += ['hi link cocoaFunction Keyword',
                'hi link cocoaClass Special',
                'hi link cocoaProtocol cocoaClass',
-               'hi link cocoaType Special',
+               'hi link cocoaType Type',
                'hi link cocoaConstant Constant',
                'hi link cocoaNotification Constant']
     return output
@@ -72,13 +72,13 @@ def join_lines(lines):
 
 def get_classes(header_files):
     '''Returns @interface classes.'''
-    return cocoa_definitions.match_output("grep -ho '@interface NS[A-Za-z]*' "
-                                          + header_files, 'NS\w+', 0)
+    return cocoa_definitions.match_output("grep -ho '@interface \(NS\|UI\)[A-Za-z]*' "
+                                          + header_files, '(NS|UI)\w+', 0)
 
 def get_protocol_classes(header_files):
     '''Returns @protocol classes.'''
-    return cocoa_definitions.match_output("grep -ho '@protocol NS[A-Za-z]*' "
-                                          + header_files, 'NS\w+', 0)
+    return cocoa_definitions.match_output("grep -ho '@protocol \(NS\|UI\)[A-Za-z]*' "
+                                          + header_files, '(NS|UI)\w+', 0)
 
 def output_file(fname=None):
     '''Writes syntax entries to file or prints them if no file is given.'''

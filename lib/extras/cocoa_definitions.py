@@ -12,20 +12,23 @@ def find(searchpath, ext):
                 results.append(os.path.join(path, filename))
     return results
 
-def find_headers(frameworks):
+def find_headers(root_folder, frameworks):
     '''Returns list of the header files for the given frameworks.'''
     headers = []
+    folder = root_folder + '/System/Library/Frameworks/'
     for framework in frameworks:
-        headers.extend(find('/System/Library/Frameworks/%s.framework'
-                            % framework, '.h'))
+        headers.extend(find(folder + framework + '.framework', '.h'))
     return headers
 
 def default_headers():
     '''Headers for common Cocoa frameworks.'''
-    frameworks = ('Foundation', 'AppKit', 'AddressBook', 'CoreData',
-                  'PreferencePanes', 'QTKit', 'ScreenSaver', 'SyncServices',
-                  'WebKit')
-    return find_headers(frameworks)
+    cocoa_frameworks = ('Foundation', 'CoreFoundation', 'AppKit',
+                        'AddressBook', 'CoreData', 'PreferencePanes', 'QTKit',
+                        'ScreenSaver', 'SyncServices', 'WebKit')
+    iphone_frameworks = ('UIKit', 'GameKit')
+    iphone_sdk_path = '/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk'
+    return find_headers('', cocoa_frameworks) + \
+           find_headers(iphone_sdk_path, iphone_frameworks)
 
 def match_output(command, regex, group_num):
     '''
@@ -42,32 +45,32 @@ def match_output(command, regex, group_num):
 
 def get_functions(header_files):
     '''Returns list of Cocoa Functions.'''
-    lines = match_output(r"grep -h '^[A-Z][A-Z_]* [^;]* \**NS\w\+ *(' "
-                         + header_files, r'NS\w+\s*\(.*?\)', 0)
+    lines = match_output(r"grep -h '^[A-Z][A-Z_]* [^;]* \**\(NS\|UI\)\w\+ *(' "
+                         + header_files, r'((NS|UI)\w+)\s*\(.*?\)', 1)
     lines = [format_function_line(line) for line in lines]
     return lines
 
 def format_function_line(line):
-    line = line.replace('NSInteger', 'int')
-    line = line.replace('NSUInteger', 'unsigned int')
-    line = line.replace('CGFloat', 'float')
+    # line = line.replace('NSInteger', 'int')
+    # line = line.replace('NSUInteger', 'unsigned int')
+    # line = line.replace('CGFloat', 'float')
     return re.sub(r'void(\s*[^*])', r'\1', line)
 
 def get_types(header_files):
     '''Returns a list of Cocoa Types.'''
-    return match_output(r"grep -h 'typedef .* _*NS[A-Za-z]*' "
-                          + header_files, r'(NS[A-Za-z]+)\s*(;|{)', 1)
+    return match_output(r"grep -h 'typedef .* _*\(NS\|UI\)[A-Za-z]*' "
+                          + header_files, r'((NS|UI)[A-Za-z]+)\s*(;|{)', 1)
 
 def get_constants(header_files):
     '''Returns a list of Cocoa Constants.'''
     return match_output(r"awk '/^(typedef )?enum .*\{/ {pr = 1;} /\}/ {pr = 0;}"
                         r"{ if(pr) print $0; }' " + header_files,
-                        r'^\s*(NS[A-Z][A-Za-z0-9_]*)', 1)
+                        r'^\s*((NS|UI)[A-Z][A-Za-z0-9_]*)', 1)
 
 def get_notifications(header_files):
     '''Returns a list of Cocoa Notifications.'''
-    return match_output(r"grep -h '\*NS.*Notification' "
-                        + header_files, r'NS\w*Notification', 0)
+    return match_output(r"grep -h '\*\(NS\|UI\).*Notification' "
+                        + header_files, r'(NS|UI)\w*Notification', 0)
 
 def write_file(filename, lines):
     '''Attempts to write list to file or exits with error if it can't.'''
