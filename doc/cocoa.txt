@@ -1,7 +1,7 @@
 *cocoa.txt*  Plugin for Cocoa/Objective-C development.
 
 cocoa.vim                                                              *cocoa*
-Last Change: June 30, 2009
+Last Change: September 08, 2009
 Author: Michael Sanders
 
 |cocoa-introduction| Introduction
@@ -46,13 +46,14 @@ you look up. To fix this, see this page: http://tinyurl.com/remove-annoying-aler
 ==============================================================================
 FEATURE OVERVIEW                                              *cocoa-features*
 
-	1. Enhanced syntax highlighting — Vim's syntax highlighting for
+	1. Enhanced syntax highlighting; Vim's syntax highlighting for
 	   Objective-C seemed a bit incomplete to me, so I have added a few
 	   niceties, such as highlighting Cocoa keywords and differentiating
 	   the method name and passed objects in method calls and definitions.
-	2. Xcode-like mappings — mappings such as ⌘R to build & run and ⌘0
-	   to switch to the project window help to integrate Xcode and Vim. For
-	   a complete list of the mappings in cocoa.vim, see |cocoa-mappings|.
+	2. Xcode-like mappings; mappings such as <d-r> (where "d" is "command")
+	   to build & run and <d-0> to switch to the project window help to
+	   integrate Xcode and Vim. For a complete list of the mappings in
+	   cocoa.vim, see |cocoa-mappings|.
 	3. Methods for the current file can be listed and navigated to with
 	   the |:ListMethods| command.
 	4. A template of methods declared in a header file (.h) can be built
@@ -69,20 +70,21 @@ MAPPINGS                                     *cocoa-mappings* *g:objc_man_key*
 
 Cocoa.vim maps the following keys, some for convenience and others to
 integrate with Xcode:
+(Disclaimer: Sorry, I could not use the swirly symbols because vim/git was
+having encoding issues. Just pretend that e.g. <d-r> means cmd-r.)
 
 	|<Leader>|A - Alternate between header (.h) and implementation (.m) file
 	K - Look up documentation for word under cursor[1]
-	⌘⌥↑ - <Leader>A
-	⌘R - Build & Run (Go)
-	⌘↩ - ⌘R
-	⌘B - Build
-	⇧⌘K - Clean
-	⌘Y - Build & Debug
-	⌘0 - Go to Project
-	⌘2 - :ListMethods
+	<d-m-up> - <Leader>A
+	<d-r> - Build & Run (Go)
+	<d-cr> - CMD-R
+	<d-b> - Build
+	<shift-k> - Clean
+	<d-0> - Go to Project
+	<d-2> - :ListMethods
 	<F5> (in insert mode) - Show omnicompletion menu
 
-	(1. This can be customized by the variable g:objc_man_key.)
+	([1] This can be customized by the variable g:objc_man_key.)
 
 ==============================================================================
 COMMANDS                                                      *cocoa-commands*
