@@ -48,6 +48,8 @@ def get_functions(header_files):
     lines = match_output(r"grep -h '^[A-Z][A-Z_]* [^;]* \**\(NS\|UI\)\w\+ *(' "
                          + header_files, r'((NS|UI)\w+)\s*\(.*?\)', 1)
     lines = [format_function_line(line) for line in lines]
+    lines += match_output(r"grep -h '^#define \(NS\|UI\)\w\+ *(' "
+                          + header_files, r'((NS|UI)\w+)\s*\(.*?\)', 1)
     return lines
 
 def format_function_line(line):
