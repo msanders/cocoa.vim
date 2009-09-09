@@ -7,13 +7,14 @@ import os, re
 from cocoa_definitions import write_file, find
 from commands import getoutput
 
-def find_headers(frameworks):
+# We need find_headers() to return a dictionary instead of a list
+def find_headers(root_folder, frameworks):
     '''Returns a dictionary of the headers for each given framework.'''
     headers_and_frameworks = {}
+    folder = root_folder + '/System/Library/Frameworks/'
     for framework in frameworks:
         headers_and_frameworks[framework] = \
-                ' '.join(find('/System/Library/Frameworks/%s.framework'
-                         % framework, '.h'))
+                ' '.join(find(folder + framework + '.framework', '.h'))
     return headers_and_frameworks
 
 def get_classes(header_files_and_frameworks):
@@ -46,10 +47,13 @@ def output_file(fname=None):
     if not os.path.isdir(os.path.dirname(fname)):
         os.mkdir(os.path.dirname(fname))
 
-    frameworks = ('Foundation', 'AppKit', 'AddressBook', 'CoreData',
-                  'PreferencePanes', 'QTKit', 'ScreenSaver', 'SyncServices',
-                  'WebKit')
-    headers_and_frameworks = find_headers(frameworks).items()
+    cocoa_frameworks = ('Foundation', 'AppKit', 'AddressBook', 'CoreData',
+                        'PreferencePanes', 'QTKit', 'ScreenSaver',
+                        'SyncServices', 'WebKit')
+    iphone_frameworks = ('UIKit', 'GameKit')
+    iphone_sdk_path = '/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk'
+    headers_and_frameworks = find_headers('', cocoa_frameworks).items() + \
+                             find_headers(iphone_sdk_path, iphone_frameworks).items()
 
     superclasses = get_superclasses(get_classes(headers_and_frameworks))
     write_file(fname, superclasses)
