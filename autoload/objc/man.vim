@@ -34,7 +34,7 @@ fun s:OpenFile(file)
 	else
 		" Sometimes Xcode doesn't download a bundle fully, and docsetutil is
 		" inaccurate.
-		if !filereadable(a:file)
+		if !filereadable(matchstr(a:file, '^.*\ze#.*$'))
 			echoh ErrorMsg
 			echom 'File "'.a:file.'" is not readable.'
 			echom 'Check that Xcode has fully downloaded the DocSet.'
