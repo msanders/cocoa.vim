@@ -1,8 +1,8 @@
 " File:         objc#man.vim (part of the cocoa.vim plugin)
 " Author:       Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description:  Allows you to look up Cocoa API docs in Vim.
-" Last Updated: June 30, 2009
-" NOTE:         See http://mymacinations.com/2008/02/06/changing-the-systems-default-settings-for-html-files-safe/
+" Last Updated: December 26, 2009
+" NOTE:         See http://tinyurl.com/remove-annoying-alert
 "               for removing the annoying security alert in Leopard.
 
 " Return all matches in for ":CocoaDoc <tab>" sorted by length.

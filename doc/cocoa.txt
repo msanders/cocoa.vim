@@ -28,9 +28,9 @@ Xcode's editor with Vim.
 ==============================================================================
 INSTALLATION                                              *cocoa-installation*
 
-Documentation lookup and code completion for Cocoa.vim are currently
-Leopard-only (although the other parts should work on any platform). To
-install, simply unzip cocoa.zip to your home vim directory (typically ~/.vim).
+Documentation lookup and code completion for Cocoa.vim currently only work on
+OS X 10.5+ (although the other parts should work on any platform). To install,
+simply unzip cocoa.zip to your home vim directory (typically ~/.vim).
 
                                                      *cocoa-suggested-plugins*
 The code completion in cocoa.vim uses snipMate, if you have it installed, to
