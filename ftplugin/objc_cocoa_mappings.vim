@@ -1,7 +1,7 @@
 " File: objc_cocoa_mappings.vim
 " Author: Michael Sanders (msanders42 [at] gmail [dot] com)
 " Description: Sets up mappings for cocoa.vim.
-" Last Updated: September 08, 2009
+" Last Updated: December 26, 2009
 
 if exists('b:cocoa_proj') || &cp || version < 700
 	finish
@@ -35,25 +35,25 @@ if exists('*s:AlternateFile') | finish | endif
 " Switch from header file to implementation file (and vice versa).
 fun s:AlternateFile()
 	let path = expand('%:p:r').'.'
-	if expand('%:e') == 'h'
-		if filereadable(path.'m')
-			exe 'e'.fnameescape(path.'m')
-			return
-		elseif filereadable(path.'c')
-			exe 'e'.fnameescape(path.'c')
-			return
-		endif
-	else
-		if filereadable(path.'h')
-			exe 'e'.fnameescape(path.'h')
-			return
-		endif
+	let extensions = expand('%:e') == 'h' ? ['m', 'c', 'cpp'] : ['h']
+	if !s:ReadableExtensionIn(path, extensions)
+		  echoh ErrorMsg | echo 'Alternate file not readable.' | echoh None
 	endif
-	echoh ErrorMsg | echo 'Alternate file not readable.' | echoh None
 endf
 
-" Opens Xcode and runs Applescript commands, splitting them onto newlines
-" if needed.
+" Returns true and switches to file if file with extension in any of
+" |extensions| is readable, or returns false if not.
+fun s:ReadableExtensionIn(path, extensions)
+	for ext in a:extensions
+		if filereadable(a:path.ext)
+			exe 'e'.fnameescape(a:path.ext)
+			return 1
+		endif
+	endfor
+	return 0
+endf
+
+" Opens Xcode and runs Applescript command.
 fun s:XcodeRun(command)
 	call system("open -a Xcode ".b:cocoa_proj." && osascript -e 'tell app "
 				\ .'"Xcode" to '.a:command."' &")
