@@ -32,9 +32,18 @@ fun s:OpenFile(file)
 	if a:file =~ '/.*/man/'
 		exe ':!'.substitute(&kp, '^man -s', 'man', '').' '.a:file
 	else
-		" /usr/bin/open strips the #fragments in file:// URLs, which we need,
-		" so I'm using applescript instead.
-		call system('osascript -e ''open location "file://'.a:file.'"'' &')
+		" Sometimes Xcode doesn't download a bundle fully, and docsetutil is
+		" inaccurate.
+		if !filereadable(a:file)
+			echoh ErrorMsg
+			echom 'File "'.a:file.'" is not readable.'
+			echom 'Check that Xcode has fully downloaded the DocSet.'
+			echoh None
+		else
+			" /usr/bin/open strips the #fragments in file:// URLs, which we need,
+			" so I'm using applescript instead.
+			call system('osascript -e ''open location "file://'.a:file.'"'' &')
+		endif
 	endif
 endf
 
