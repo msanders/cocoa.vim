@@ -13,8 +13,9 @@ def find_headers(root_folder, frameworks):
     headers_and_frameworks = {}
     folder = root_folder + '/System/Library/Frameworks/'
     for framework in frameworks:
-        headers_and_frameworks[framework] = \
-                ' '.join(find(folder + framework + '.framework', '.h'))
+        bundle = folder + framework + '.framework'
+        if os.path.isdir(bundle):
+            headers_and_frameworks[framework] = ' '.join(find(bundle, '.h'))
     return headers_and_frameworks
 
 def get_classes(header_files_and_frameworks):
