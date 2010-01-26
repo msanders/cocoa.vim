@@ -9,6 +9,20 @@
 "          for you, just comment out the next line.
 ru after/syntax/cocoa_keywords.vim
 
+" taken from nanotech's fork: http://github.com/nanotech/cocoa.vim
+"
+" This can be inaccurate, but it's nice when it works.
+" You could be a bit more strict and require a two-letter
+" prefix, but not all classes have prefixes.
+"
+"syn match objcCustomClass /\<[A-Z][A-Za-z0-9]\+\>/ display
+syn match objcCustomClass /\<[A-Z][A-Z][A-Za-z0-9]\+\>/ display
+
+hi link objcCustomClass cocoaClass
+
+syn match cCustomConstant /\<[A-Z_][A-Z0-9_]\+\>/ display
+hi link cCustomConstant Constant
+
 syn match objcDirective '@synthesize\|@property\|@optional\|@required' display
 syn keyword objcType IBOutlet IBAction Method
 syn keyword objcConstant YES NO TRUE FALSE
@@ -45,7 +59,7 @@ syn cluster cMultiGroup add=objcMessageColon,objcMessageName,objcMethodName,objc
 
 " You may want to customize this one. I couldn't find a default group to suit
 " it, but you can modify your colorscheme to make this a different color.
-hi link objcMethodName Special
+"hi link objcMethodName Special
 hi link objcMethodColon objcMethodName
 
 hi link objcMethodArg Identifier
