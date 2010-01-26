@@ -3,7 +3,7 @@
 " Last Updated: June 30, 2009
 " Description:  An omni-completion plugin for Cocoa/Objective-C.
 
-let s:lib_dir = fnameescape($HOME.'/.vim/lib/')
+let s:lib_dir = fnameescape(expand('<sfile>:p:h:h:h').'/lib/')
 let s:cocoa_indexes = s:lib_dir.'cocoa_indexes/'
 
 if !isdirectory(s:cocoa_indexes)
