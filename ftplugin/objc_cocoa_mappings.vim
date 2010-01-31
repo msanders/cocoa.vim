@@ -7,6 +7,18 @@ if exists('b:cocoa_proj') || &cp || version < 700
 	finish
 endif
 let b:cocoa_proj = fnameescape(globpath(expand('<afile>:p:h'), '*.xcodeproj'))
+" Search a few levels up to see if we can find the project file
+if empty(b:cocoa_proj)
+	let b:cocoa_proj  = fnameescape(globpath(expand('<afile>:p:h:h'), '*.xcodeproj'))
+
+	if empty(b:cocoa_proj)
+		let b:cocoa_proj = fnameescape(globpath(expand('<afile>:p:h:h:h'), '*.xcodeproj'))
+		if empty(b:cocoa_proj)
+			let b:cocoa_proj = fnameescape(globpath(expand('<afile>:p:h:h:h:h'), '*.xcodeproj'))
+		endif
+	endif
+endif
+let g:x = b:cocoa_proj
 
 com! -buffer ListMethods call objc#method_list#Activate(1)
 com! -buffer -nargs=? -complete=customlist,objc#method_builder#Completion BuildMethods call objc#method_builder#Build('<args>')
