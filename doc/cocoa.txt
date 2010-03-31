@@ -1,7 +1,7 @@
 *cocoa.txt*  Plugin for Cocoa/Objective-C development.
 
 cocoa.vim                                                              *cocoa*
-Last Change: September 08, 2009
+Last Change: March 30, 2010
 Author: Michael Sanders
 
 |cocoa-introduction| Introduction
@@ -83,6 +83,9 @@ having encoding issues. Just pretend that e.g. <d-r> means cmd-r.)
 	<d-0> - Go to Project
 	<d-2> - :ListMethods
 	<F5> (in insert mode) - Show omnicompletion menu
+	<d-/> - Comment out line
+	<d-[> - Decrease indent
+	<d-]> - Increase indent
 
 	([1] This can be customized by the variable g:objc_man_key.)
 
@@ -118,7 +121,7 @@ LICENSE                                                        *cocoa-license*
 
 Cocoa.vim is released under the MIT license:
 
-Copyright © 2009 Michael Sanders. All rights reserved.
+Copyright 2009-2010 Michael Sanders. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
