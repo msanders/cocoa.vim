@@ -29,6 +29,9 @@ nn <buffer> <silent> <d-0> :call system('open -a Xcode '.b:cocoa_proj)<cr>
 nn <buffer> <silent> <d-2> :<c-u>ListMethods<cr>
 nm <buffer> <silent> <d-cr> <d-r>
 ino <buffer> <silent> <f5> <c-x><c-o>
+nn <buffer> <d-/> I// <ESC>
+nn <buffer> <d-[> <<
+nn <buffer> <d-]> >>
 
 if exists('*s:AlternateFile') | finish | endif
 
