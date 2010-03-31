@@ -75,12 +75,20 @@ fun objc#man#ShowDoc(...)
 			" Format string is: " Language/type/class/word path"
 			let path = matchstr(line, '\S*$')
 			if path[0] != '/' | let path = docset.path | endif
-			if has_key(references, path) | continue | endif " Ignore duplicate entries
 
-			let [lang, type, class] = split(matchstr(line, '^ \zs*\S*'), '/')[:2]
+			" Ignore duplicate entries
+			if has_key(references, path) | continue | endif
+
+			let attrs = split(matchstr(line, '^ \zs*\S*'), '/')[:2]
+
+			" Ignore unrecognized entries.
+			if len(attrs) != 3 | continue | endif
+
 			" If no class is given use type instead
+			let [lang, type, class] = attrs
 			if class == '-' | let class = type | endif
-			let references[path] = {'lang': lang, 'class': class, 'location': location}
+			let references[path] = {'lang': lang, 'class': class,
+								  \ 'location': location}
 		endfor
 	endfor
 
