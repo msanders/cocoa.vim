@@ -1,5 +1,5 @@
 " File: cocoa.vim
-" Author: Michael Sanders msanders [at] gmail [dot] com
+" Author: Michael Sanders (msanders42 [at] gmail [dot] com)
 if exists('s:did_cocoa') || &cp || version < 700
 	finish
 endif
